@@ -46,11 +46,11 @@ class DataRetrievalAgent:
     def ask_for_data_location(self) -> str:
         """Get message asking for data location."""
         return (
-            "📁 Where is your data stored?\n\n"
+            "[File] Where is your data stored?\n\n"
             "Options:\n"
-            "  1️⃣ Google Drive (share the link)\n"
-            "  2️⃣ Local file (provide file path)\n"
-            "  3️⃣ S3 bucket (coming soon)\n\n"
+            "  1. Google Drive (share the link)\n"
+            "  2. Local file (provide file path)\n"
+            "  3. S3 bucket (coming soon)\n\n"
             "Please specify:"
         )
     
@@ -58,17 +58,17 @@ class DataRetrievalAgent:
         """Get message asking for file path/link."""
         if data_source == 'google_drive':
             return (
-                "🔗 Please share your Google Drive file link or ID\n\n"
+                "[Link] Please share your Google Drive file link or ID\n\n"
                 "Example: https://docs.google.com/spreadsheets/d/1xABC.../edit"
             )
         elif data_source == 'local':
             return (
-                "📂 Please provide the full path to your file\n\n"
+                "[File] Please provide the full path to your file\n\n"
                 "Example: C:\\Users\\Documents\\sales_data.xlsx"
             )
         elif data_source == 's3':
             return (
-                "☁️ Please provide the S3 bucket and key\n\n"
+                "[S3] Please provide the S3 bucket and key\n\n"
                 "Example: s3://my-bucket/sales_data.xlsx"
             )
         else:
@@ -97,12 +97,12 @@ class DataRetrievalAgent:
             elif data_source == 'local':
                 return self._retrieve_from_local(path, state)
             elif data_source == 's3':
-                return False, "❌ S3 integration coming soon!", None
+                return False, "[Error] S3 integration coming soon!", None
             else:
-                return False, f"❌ Unknown data source: {data_source}", None
+                return False, f"[Error] Unknown data source: {data_source}", None
                 
         except Exception as e:
-            return False, f"❌ Error retrieving data: {str(e)}", None
+            return False, f"[Error] Error retrieving data: {str(e)}", None
     
     def _retrieve_from_google_drive(
         self,
@@ -111,26 +111,26 @@ class DataRetrievalAgent:
     ) -> Tuple[bool, str, Optional[str]]:
         """Retrieve file from Google Drive."""
         try:
-            print("\n🔐 Initializing Google Drive client...")
+            print("\n[Auth] Initializing Google Drive client...")
             
             if self.google_drive_client is None:
                 self.google_drive_client = GoogleDriveClient()
             
-            print("⬇️  Downloading file from Google Drive...")
+            print("[Download] Downloading file from Google Drive...")
             file_path = self.google_drive_client.download_file(url_or_id)
             
             state.set_downloaded_file(file_path)
             
             return (
                 True,
-                f"✅ Successfully downloaded file from Google Drive!\n📄 File: {Path(file_path).name}",
+                f"[Success] Successfully downloaded file from Google Drive!\n[File] File: {Path(file_path).name}",
                 file_path
             )
             
         except FileNotFoundError as e:
             return False, str(e), None
         except Exception as e:
-            return False, f"❌ Google Drive error: {str(e)}", None
+            return False, f"[Error] Google Drive error: {str(e)}", None
     
     def _retrieve_from_local(
         self,
@@ -144,21 +144,21 @@ class DataRetrievalAgent:
             
             return (
                 True,
-                f"✅ Found local file!\n📄 File: {Path(validated_path).name}",
+                f"[Success] Found local file!\n[File] File: {Path(validated_path).name}",
                 validated_path
             )
             
         except FileNotFoundError:
-            return False, f"❌ File not found: {file_path}", None
+            return False, f"[Error] File not found: {file_path}", None
         except Exception as e:
-            return False, f"❌ Error accessing local file: {str(e)}", None
+            return False, f"[Error] Error accessing local file: {str(e)}", None
 
 
 if __name__ == "__main__":
     # Test the data retrieval agent
     agent = DataRetrievalAgent()
     
-    print("🤖 Data Retrieval Agent initialized")
+    print("[Bot] Data Retrieval Agent initialized")
     print(agent.ask_for_data_location())
     
     # Test detection

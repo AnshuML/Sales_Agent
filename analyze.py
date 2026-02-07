@@ -12,7 +12,7 @@ if __name__ == "__main__":
         import runpy
         runpy.run_module("sales_agent.agents.analysis_agent", run_name="__main__", alter_sys=True)
     except ImportError as e:
-        print(f"❌ Error starting agent: {e}")
-        print("Please ensure you are in the project root directory.")
+        print(f"[ImportError] starting agent: {e}")
+        print("Please ensure you are in the project root directory and the environment is set up correctly.")
     except Exception as e:
-        print(f"❌ Error: {e}")
+        print(f"[Error]: {e}")

@@ -31,7 +31,7 @@ class OrchestratorAgent:
         self.state.add_message("user", user_query)
         
         print(f"\n{'='*60}")
-        print(f"🎯 User Query: {user_query}")
+        print(f"[Query] User Query: {user_query}")
         print(f"{'='*60}\n")
         
         # Check if data is needed
@@ -94,7 +94,7 @@ class OrchestratorAgent:
             response = self.data_agent.ask_for_path(data_source)
         else:
             response = (
-                "❌ I couldn't detect the data source. Please specify:\n"
+                "[Error] I couldn't detect the data source. Please specify:\n"
                 "  • Google Drive\n"
                 "  • Local file\n"
                 "  • S3 bucket"
@@ -113,7 +113,7 @@ class OrchestratorAgent:
             if data_source:
                 self.state.set_data_source(data_source, user_input)
             else:
-                return "❌ Could not detect data source. Please start over."
+                return "[Error] Could not detect data source. Please start over."
         
         # Retrieve the data
         success, message, file_path = self.data_agent.retrieve_data(
@@ -128,11 +128,9 @@ class OrchestratorAgent:
                 self.current_step = "ready_for_analysis"
                 
                 # Automatically analyze based on original query
-                analysis_response = self._handle_analysis_query(self.state.original_query)
-                
                 response = f"{message}\n\n{analysis_response}"
             else:
-                response = f"{message}\n\n❌ Failed to load data for analysis."
+                response = f"{message}\n\n[Error] Failed to load data for analysis."
         else:
             response = message
         
@@ -141,7 +139,7 @@ class OrchestratorAgent:
     
     def _handle_analysis_query(self, query: str) -> str:
         """Handle analysis query."""
-        print(f"\n🔬 Analyzing: {query}")
+        print(f"\n[Analysis] Analyzing: {query}")
         
         results = self.analysis_agent.execute_analysis(query)
         
@@ -166,7 +164,7 @@ class OrchestratorAgent:
 if __name__ == "__main__":
     # Test orchestrator
     orchestrator = OrchestratorAgent()
-    print("🤖 Orchestrator Agent initialized")
+    print("[Bot] Orchestrator Agent initialized")
     
     # Simulate conversation
     response = orchestrator.start_conversation("Show me this quarter's sales")

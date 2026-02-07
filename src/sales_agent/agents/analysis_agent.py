@@ -205,9 +205,8 @@ if __name__ == "__main__":
         print(f" Error initializing agent: {e}")
         sys.exit(1)
     
-    # Ask for file
     while True:
-        file_path_input = input("\n📂 Enter path to sales data file (e.g., data/Agents.xlsx): ").strip().strip('"').strip("'")
+        file_path_input = input("\n[File] Enter path to sales data file (e.g., data/Agents.xlsx): ").strip().strip('"').strip("'")
         if not file_path_input:
             continue
             
@@ -225,4 +224,4 @@ if __name__ == "__main__":
                     print(f"\n{result['message']}")
                 break
         else:
-            print(f" File not found: {file_path_input}")
+            print(f" [Error] File not found: {file_path_input}")

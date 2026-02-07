@@ -27,21 +27,21 @@ from sales_agent.utils.config import validate_config
 def print_welcome():
     """Print welcome message."""
     print("\n" + "="*70)
-    print("  📊 MULTI-AGENT SALES ANALYSIS SYSTEM")
+    print("  [SALES] MULTI-AGENT SALES ANALYSIS SYSTEM")
     print("="*70)
-    print("\n🤖 Powered by hybrid LLM + function-based intelligence")
-    print("💡 I can help you analyze sales data, calculate metrics,")
+    print("\n[Bot] Powered by hybrid LLM + function-based intelligence")
+    print("[Tip] I can help you analyze sales data, calculate metrics,")
     print("   and create visualizations!\n")
 
 
 def print_help():
     """Print help information."""
-    print("\n📖 **Example Queries:**")
+    print("\n[Info] **Example Queries:**")
     print("  • 'Show me this quarter's sales (Nov, Dec, Jan)'")
     print("  • 'Calculate total revenue'")
     print("  • 'Create a bar chart of top products'")
     print("  • 'Add a profit margin column'")
-    print("\n💡 **Commands:**")
+    print("\n[Tip] **Commands:**")
     print("  • 'help' - Show this help message")
     print("  • 'new' - Start a new conversation")
     print("  • 'exit' or 'quit' - Exit the program\n")
@@ -53,7 +53,7 @@ def main():
         # Validate configuration
         validate_config()
     except ValueError as e:
-        print(f"\n❌ Configuration Error:\n{e}\n")
+        print(f"\n[Error] Configuration Error:\n{e}\n")
         print("Please create a .env file based on .env.example")
         print("and add your GOOGLE_API_KEY")
         return
@@ -68,16 +68,16 @@ def main():
             # Get user input
             if orchestrator is None:
                 print("\n" + "-"*70)
-                user_input = input("\n🎯 What would you like to analyze? ").strip()
+                user_input = input("\n[Query] What would you like to analyze? ").strip()
             else:
-                user_input = input("\n👤 You: ").strip()
+                user_input = input("\n[You] You: ").strip()
             
             if not user_input:
                 continue
             
             # Handle commands
             if user_input.lower() in ['exit', 'quit', 'q']:
-                print("\n👋 Goodbye! Thanks for using the Multi-Agent Sales Analysis System!\n")
+                print("\n[Bye] Goodbye! Thanks for using the Multi-Agent Sales Analysis System!\n")
                 break
             
             elif user_input.lower() == 'help':
@@ -86,7 +86,7 @@ def main():
             
             elif user_input.lower() == 'new':
                 orchestrator = None
-                print("\n✨ Starting new conversation...")
+                print("\n[New] Starting new conversation...")
                 continue
             
             # Process with orchestrator
@@ -99,17 +99,17 @@ def main():
                 response = orchestrator.process_user_response(user_input)
             
             # Display response
-            print(f"\n🤖 Assistant:\n{response}")
+            print(f"\n[Bot] Assistant:\n{response}")
             
             # Check if conversation is complete
             if orchestrator and orchestrator.is_complete():
                 print("\n" + "="*70)
-                print("✅ **Analysis Complete!**")
+                print("[Done] **Analysis Complete!**")
                 print("="*70)
                 
                 summary = orchestrator.get_conversation_summary()
                 if summary.get('output_file'):
-                    print(f"\n📄 Output file: {summary['output_file']}")
+                    print(f"\n[File] Output file: {summary['output_file']}")
                     print("\nYou can now:")
                     print("  1. Download the file")
                     print("  2. Open it to see the results")
@@ -119,11 +119,11 @@ def main():
                 orchestrator = None
         
         except KeyboardInterrupt:
-            print("\n\n👋 Interrupted. Type 'exit' to quit or continue chatting.")
+            print("\n\n[Interrupt] Interrupted. Type 'exit' to quit or continue chatting.")
             continue
         
         except Exception as e:
-            print(f"\n❌ Error: {e}")
+            print(f"\n[Error] Error: {e}")
             print("Type 'new' to start over or 'help' for assistance.")
 
 
